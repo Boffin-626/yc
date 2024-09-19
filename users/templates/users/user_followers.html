@@ -1,0 +1,16 @@
+{% extends 'inaEthe/base.html' %}
+
+{% block page_content %}
+<div class="container mt-5">
+    <h1>Your Followers</h1>
+    <ul class="list-group">
+        {% for follower in followers %}
+            <li class="list-group-item">
+                <a href="{% url 'users:profile' follower.username %}">{{ follower.username }}</a>
+            </li>
+        {% empty %}
+            <li class="list-group-item">You have no followers yet.</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock page_content %}

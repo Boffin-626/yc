@@ -1,0 +1,22 @@
+{% extends 'inaEthe/base.html' %}
+
+{% block page_content %}
+<div class="container mt-5">
+    <h2>Other Books</h2>
+    <div class="row">
+        {% for book in books %}
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <img src="{{ book.cover_image.url }}" class="card-img-top" alt="{{ book.title }}" style="width: 350px; height: 250px; object-fit: contain;">
+                <div class="card-body">
+                    <h5 class="card-title">{{ book.title }}</h5>
+                    <p class="card-text">{{ book.description|truncatewords:20 }}</p>
+                    <a href="{% url 'inaEthe:book_detail' book.id %}" class="btn btn-danger">View Details</a>
+                    <a href="{% url 'inaEthe:book_preview' book.id %}" class="btn btn-warning">Preview and Purchase</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock page_content %}

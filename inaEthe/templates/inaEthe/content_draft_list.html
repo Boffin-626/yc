@@ -1,0 +1,18 @@
+{% extends 'inaEthe/base.html' %}
+
+{% block page_content %}
+<h2>Drafts</h2>
+
+{% if drafts %}
+    <ul>
+    {% for draft in drafts %}
+        <li>
+            <a href="{% url 'inaEthe:content_detail' pk=draft.pk %}">{{ draft.title }}</a>
+            <p>{{ draft.created_at }}</p>
+        </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No drafts available.</p>
+{% endif %}
+{% endblock page_content %}

@@ -1,0 +1,13 @@
+{% extends 'inaEthe/base.html' %}
+{% block page_title %}Send Message{% endblock %}
+
+{% block page_content %}
+<div class="container mt-4">
+    <h2>Send Message to {{ receiver.username }}</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Send</button>
+    </form>
+</div>
+{% endblock page_content %}

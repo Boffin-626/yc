@@ -1,0 +1,18 @@
+{% extends "inaEthe/base.html" %}
+
+{% block page_content %}
+<h2>Manage Content Permissions</h2>
+<form method="post">
+    {% csrf_token %}
+    {% for content in user_content %}
+        <div>
+            <label>
+                <input type="checkbox" name="permission" {% if content.permission_granted %}checked{% endif %}>
+                Allow "{{ content.title }}" to be compiled into a book
+            </label>
+            <input type="hidden" name="content_id" value="{{ content.id }}">
+        </div>
+    {% endfor %}
+    <button type="submit">Save Changes</button>
+</form>
+{% endblock page_content %}

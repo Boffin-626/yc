@@ -1,0 +1,18 @@
+{% extends 'inaEthe/base.html' %}
+
+{% block page_content %}
+<h2>{{ book.title }}</h2>
+<p>{{ book.description }}</p>
+<h3>Contents</h3>
+<ul>
+    {% for content in contents %}
+        <li>
+            <h4>{{ content.title }}</h4>
+            <p>{{ content.body|truncatewords:30 }}</p>
+        </li>
+    {% empty %}
+        <li>No contents available.</li>
+    {% endfor %}
+</ul>
+<a href="{% url 'inaEthe:generate_pdf' book.id %}">Download PDF</a>
+{% endblock page_content %}

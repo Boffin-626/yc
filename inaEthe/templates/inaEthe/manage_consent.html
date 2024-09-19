@@ -1,0 +1,14 @@
+{% extends 'inaEthe/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block page_content %}
+<div class="container mt-5">
+    <h2>Manage Consent for: {{ content.title }}</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button type="submit" class="btn btn-primary">Update Consent</button>
+    </form>
+    <a href="{% url 'inaEthe:user_content' %}" class="btn btn-secondary mt-3">Back to Content</a>
+</div>
+{% endblock oage_content %}

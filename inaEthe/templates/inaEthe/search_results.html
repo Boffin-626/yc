@@ -1,0 +1,52 @@
+<!-- search_results.html -->
+{% extends 'inaEthe/base.html' %}
+
+{% block page_content %}
+<h1>Search Results for "{{ query }}"</h1>
+
+<h2>Content Results</h2>
+<ul>
+    {% for content in content_results %}
+        <li>
+            <a href="{% url 'inaEthe:content_detail' content.id %}">{{ content.title }}</a> by {{ content.author.username }}
+        </li>
+    {% empty %}
+        <li>No content found.</li>
+    {% endfor %}
+</ul>
+
+<h2>Book Results</h2>
+<ul>
+    {% for book in book_results %}
+        <li>
+            <a href="{% url 'inaEthe:book_detail' book.id %}">{{ book.title }}</a>
+        </li>
+    {% empty %}
+        <li>No books found.</li>
+    {% endfor %}
+</ul>
+
+<h2>Category Results</h2>
+<ul>
+    {% for category in category_results %}
+        <li>
+            <a href="{% url 'inaEthe:content_by_category' category.id %}">{{ category.name }}</a>
+        </li>
+    {% empty %}
+        <li>No categories found.</li>
+    {% endfor %}
+</ul>
+
+<h2>User Results</h2>
+<ul>
+    {% for user in user_results %}
+        <li>
+            {{ user.username }} ({{ user.first_name }} {{ user.last_name }})
+        </li>
+    {% empty %}
+        <li>No users found.</li>
+    {% endfor %}
+</ul>
+
+<a href="{% url 'inaEthe:index' %}">Go back to Home</a>
+{% endblock page_content %}

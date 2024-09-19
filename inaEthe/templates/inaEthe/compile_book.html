@@ -1,0 +1,25 @@
+{% extends 'inaEthe/base.html' %}
+
+{% block page_content %}
+<h3>Compile Book: {{ book.title }}</h3>
+
+<form method="POST">
+    {% csrf_token %}
+    <h3>Select Content to Add to the Book:</h3>
+    <ul>
+        {% for content in all_content %}
+        <li>
+            <input type="checkbox" name="content_ids" value="{{ content.id }}"
+            {% if content in book.content.all %}checked{% endif %}>
+            {{ content.title }} by {{ content.author.username }}
+        </li>
+        {% empty %}
+        <li>No content available to compile</li>
+        {% endfor %}
+    </ul>
+
+    <button type="submit">Compile Book</button>
+</form>
+
+<a href="{% url 'inaEthe:book_detail' book.id %}">Back to Book Details</a>
+{% endblock page_content %}

@@ -1,0 +1,17 @@
+{% extends 'inaEthe/base.html' %}
+
+{% block page_content %}
+<h2>Manage Payment Methods</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Add Payment Method</button>
+</form>
+
+<h3>Your Payment Methods</h3>
+<ul>
+    {% for method in payment_methods %}
+        <li>{{ method.card_holder_name }} - {{ method.card_number }}</li>
+    {% endfor %}
+</ul>
+{% endblock page_content %}

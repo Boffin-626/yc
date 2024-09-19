@@ -1,0 +1,18 @@
+{% extends 'inaEthe/base.html' %}
+
+{% block page_content %}
+<div class="category-page">
+    <h1>{{ category.name }}</h1>
+    
+    <h2>Content in this Category:</h2>
+    <ul>
+        {% for content in contents %}
+            <li>
+                <a href="{% url 'inaEthe:content_detail' content.id %}">{{ content.title }}</a> by {{ content.author }}
+            </li>
+            {% empty %}
+            <li>No content available.</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock page_content %}

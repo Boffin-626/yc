@@ -1,0 +1,85 @@
+{% extends 'inaEthe/base.html' %}
+
+{% block page_title %}Inbox{% endblock %}
+{% block page_content %}
+<style>
+    .inbox-container {
+        max-width: 900px;
+        margin: 40px auto;
+        padding: 40px;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .inbox-header {
+        margin-bottom: 30px;
+    }
+
+    .inbox-header h1 {
+        font-size: 2.5em;
+        color: #333;
+        font-weight: bold;
+    }
+
+    .message-list {
+        list-style: none;
+        padding-left: 0;
+    }
+
+    .message-list li {
+        padding: 15px;
+        background: #f8f9fa;
+        margin-bottom: 10px;
+        border-radius: 8px;
+        transition: background 0.3s;
+        position: relative;
+    }
+
+    .message-list li:hover {
+        background: #e9ecef;
+    }
+
+    .message-list li.read {
+        background: #e9ecef;
+    }
+
+    .message-list li .sender {
+        font-weight: bold;
+        color: #007bff;
+    }
+
+    .message-list li .timestamp {
+        font-size: 0.9em;
+        color: #888;
+        position: absolute;
+        top: 15px;
+        right: 15px;
+    }
+
+    .message-list li .content {
+        margin-top: 10px;
+        font-size: 1.1em;
+    }
+
+    .no-messages {
+        text-align: center;
+        font-size: 1.2em;
+        color: #555;
+    }
+</style>
+<div class="container mt-4">
+    <h2>Inbox</h2>
+    <ul class="list-group">
+        {% for message in messages %}
+        <li class="list-group-item">
+            <strong>From:</strong> {{ message.sender.username }}<br>
+            <strong>Message:</strong> {{ message.content }}<br>
+            <small class="text-muted">{{ message.timestamp }}</small>
+        </li>
+        {% empty %}
+        <li class="list-group-item">No messages yet.</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock page_content %}

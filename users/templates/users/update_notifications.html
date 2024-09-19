@@ -1,0 +1,13 @@
+{% extends "inaEthe/base.html" %}
+
+{% block page_content %}
+<div class="container mt-4">
+    <h4>Update Notification Settings</h4>
+    
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Update</button>
+    </form>
+</div>
+{% endblock page_content %}

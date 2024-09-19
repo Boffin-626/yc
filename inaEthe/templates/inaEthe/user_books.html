@@ -1,0 +1,12 @@
+{% extends 'inaEthe/base.html' %}
+
+{% block page_content %}
+  <h2>Books Containing Your Content</h2>
+  <ul>
+    {% for book in books %}
+      <li>{{ book.title }} - Published on {{ book.published_date }}</li>
+    {% empty %}
+      <li>No books contain your content yet.</li>
+    {% endfor %}
+  </ul>
+{% endblock page_content %}

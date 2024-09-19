@@ -1,0 +1,153 @@
+{% extends 'inaEthe/base.html' %}
+{% load static %}
+
+{% block page_title %}Welcome to InaEthe{% endblock %}
+
+{% block page_content %}
+<style>
+    .hero-section {
+        background-image: url("{% static 'images/hero-bg.jpg' %}");
+        background-size: cover;
+        background-position: center;
+        text-align: center;
+        color: white;
+        padding: 100px 20px;
+    }
+    .hero-section h1 {
+        font-size: 3em;
+        margin-bottom: 20px;
+    }
+    .hero-section p {
+        font-size: 1.5em;
+        margin-bottom: 40px;
+    }
+    .hero-section .cta-btn {
+        font-size: 1.2em;
+        padding: 10px 20px;
+        color: white;
+        background-color: #007bff;
+        border-radius: 8px;
+        text-decoration: none;
+    }
+    .section-title {
+        text-align: center;
+        margin: 40px 0 20px;
+        font-size: 2em;
+        color: #333;
+    }
+    .trending-content, .trending-users, .popular-categories, .trending-books {
+        margin-bottom: 40px;
+    }
+    .trending-content .content-card,
+    .trending-users .user-card,
+    .popular-categories .category-card,
+    .trending-books .book-card {
+        border: 1px solid #ddd;
+        padding: 15px;
+        border-radius: 8px;
+        text-align: center;
+        margin: 15px;
+    }
+    .user-card img,
+    .content-card img,
+    .book-card img {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+    }
+    .book-card img {
+        border-radius: 0;
+    }
+    .category-card img {
+        width: 80px;
+        height: 80px;
+    }
+    .footer {
+        background-color: #f8f9fa;
+        padding: 20px;
+        text-align: center;
+        color: #555;
+    }
+</style>
+
+<!-- Hero Section -->
+<div class="hero-section">
+    <h1>Welcome to InaEthe</h1>
+    <p>Discover, Create, and Share Content with the World!</p>
+    <a href="{% url 'account_signup' %}" class="cta-btn">Sign Up Now</a>
+    <a href="{% url 'account_login' %}" class="cta-btn" style="margin-left: 20px;">Login</a>
+</div>
+
+<!-- Trending Content Section -->
+<section class="trending-section">
+    <h2>Trending Content</h2>
+    {% if trending_content %}
+        <ul class="trending-list">
+            {% for content in trending_content %}
+                <li class="trending-item">
+                    <div class="trending-details">
+                        <h3>{{ content.title }}</h3>
+                        <p>by <strong>{{ content.author }}</strong></p>
+                        <p>{{ content.likes.count }} likes</p>
+                    </div>
+                    <a href="{% url 'inaEthe:content_detail' content.id %}" class="view-content">View Content</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No trending content available at the moment.</p>
+    {% endif %}
+</section>
+
+<!-- Trending Users Section -->
+<div class="container trending-users">
+    <h2 class="section-title">Trending Users</h2>
+    <div class="row">
+        {% for user in trending_users %}
+        <div class="col-md-3 user-card">
+            <img src="{{ user.profile.profile_picture.url }}" alt="{{ user.username }}'s profile picture">
+            <h4>{{ user.username }}</h4>
+            <p>{{ user.profile.bio|truncatewords:10 }}</p>
+            <a href="{% url 'inaEthe:profile_view' user.pk %}" class="btn btn-secondary">View Profile</a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Popular Categories Section -->
+<div class="container popular-categories">
+    <h2 class="section-title">Popular Categories</h2>
+    <div class="row">
+        {% for category in popular_categories %}
+        <div class="col-md-3 category-card">
+            <img src="{% static 'category_icon.png' %}" alt="{{ category.name }}">
+            <h4>{{ category.name }}</h4>
+            <p>{{ category.description|truncatewords:15 }}</p>
+            <a href="{% url 'inaEthe:category_content' category.pk %}" class="btn btn-info">Explore</a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Trending Books Section -->
+<div class="container trending-books">
+    <h2 class="section-title">Trending Books</h2>
+    <div class="row">
+        {% for book in trending_books %}
+        <div class="col-md-3 book-card">
+            <img src="{{ book.cover_image.url }}" alt="{{ book.title }} cover">
+            <h4>{{ book.title }}</h4>
+            <p>{{ book.description|truncatewords:15 }}</p>
+            <a href="{% url 'inaEthe:book_detail' book.pk %}" class="btn btn-success">Read Now</a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+    <p>&copy; 2024 InaEthe. All Rights Reserved.</p>
+    <a href="{% url 'account_signup' %}">Sign Up</a> | <a href="{% url 'account_login' %}">Login</a>
+</div>
+
+{% endblock page_content %}

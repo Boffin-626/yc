@@ -1,0 +1,80 @@
+{% extends 'inaEthe/base.html' %}
+{% load static %}
+
+{% block page_content %}
+<div class="container mt-5">
+    <h1>Account Settings</h1>
+    
+    <!-- Profile Information -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h2>Profile Information</h2>
+        </div>
+        <div class="card-body">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="bio">Bio</label>
+                    <textarea id="bio" name="bio" class="form-control" rows="3">{{ profile.bio }}</textarea>
+                </div>
+                <div class="form-group">
+                    <label for="profile_picture">Profile Picture</label>
+                    <input type="file" id="profile_picture" name="profile_picture" class="form-control">
+                </div>
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Notifications Settings -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h2>Notification Preferences</h2>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                {{ notification_form.as_p }}
+                <button type="submit" class="btn btn-primary">Save Notification Preferences</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Security Settings -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h2>Security Settings</h2>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                {{ security_form.as_p }}
+                <button type="submit" class="btn btn-primary">Save Security Settings</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Terms of Service -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h2>Accept Terms of Service</h2>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                {{ terms_form.as_p }}
+                <button type="submit" class="btn btn-primary">Accept Terms</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Upload IP Document -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h2>Upload Intellectual Property</h2>
+        </div>
+        <div class="card-body">
+        </div>
+    </div>
+</div>
+{% endblock page_content %}

@@ -1,0 +1,13 @@
+<a class="nav-link" href="{% url 'inaEthe:create_content' %}">Create Content</a>
+  {% for content in contents %}
+    <div class="content-item">
+      <h4>{{ content.title }}</h4>
+      <p>{{ content.body }}</p>
+      <p>By {{ content.author.username }} on {{ content.created_at }}</p>
+
+      {% if content.author == user %}
+        <a href="{% url 'inaEthe:edit_content' content.pk %}" class="btn btn-secondary btn-sm">Edit</a> 
+        <a href="{% url 'inaEthe:delete_content' content.pk %}" class="btn btn-secondary btn-sm">Delete</a>
+      {% endif %}
+    </div>
+  {% endfor %}

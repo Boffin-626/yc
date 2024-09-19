@@ -1,0 +1,26 @@
+{% extends 'inaEthe/base.html' %}
+
+{% block page_title %}Your Contents{% endblock page_title %}
+
+{% block page_content %}
+<div class="container">
+    <h2>Your Contents</h2>
+    <a href="{% url 'inaEthe:create_content' %}" class="btn btn-success mb-3">Create New Content</a>
+    <ul class="list-group">
+        {% for content in contents %}
+        <li class="list-group-item">
+            <h4><a href="{% url 'inaEthe:content_detail' content.pk %}">{{ content.title }}</a></h4>
+            <p>{{ content.body|truncatewords:30 }}</p>
+            {% if content.is_approved_for_book %}
+                <span class="badge bg-success">Approved</span>
+                <a href="{% url 'inaEthe:unapprove_content' content.pk %}" class="btn btn-warning btn-sm">Unapprove</a>
+            {% else %}
+                <a href="{% url 'inaEthe:approve_content' content.pk %}" class="btn btn-success btn-sm">Approve</a>
+            {% endif %}
+            <a href="{% url 'inaEthe:edit_content' content.pk %}" class="btn btn-warning btn-sm">Edit</a>
+            <a href="{% url 'inaEthe:delete_content' content.pk %}" class="btn btn-danger btn-sm">Delete</a>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock page_content %}

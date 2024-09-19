@@ -1,0 +1,31 @@
+{% extends 'inaEthe/base.html' %}
+{% block page_title %}Post Details{% endblock page_title %}
+
+{% block page_content %}
+<h1>{{ post.user.username }}'s Post</h1>
+<div class="card mb-3">
+    <div class="card-body">
+        <h5 class="card-title">{{ post.content }}</h5>
+        <p class="card-text"><small class="text-muted">Posted on {{ post.created_at }}</small></p>
+        <a href="{% url 'inaEthe:like_post' post.id %}" class="btn btn-outline-primary">Like ({{ post.likes_count }})</a>
+    </div>
+</div>
+
+<h2>Comments</h2>
+{% for comment in comments %}
+    <div class="card mb-2">
+        <div class="card-body">
+            <h5 class="card-title">{{ comment.user.username }}</h5>
+            <p class="card-text">{{ comment.content }}</p>
+            <p class="card-text"><small class="text-muted">Commented on {{ comment.created_at }}</small></p>
+        </div>
+    </div>
+{% endfor %}
+
+<h3>Add a Comment</h3>
+<form method="post">
+    {% csrf_token %}
+    {{ comment_form.as_p }}
+    <button type="submit" class="btn btn-primary">Comment</button>
+</form>
+{% endblock page_content %}

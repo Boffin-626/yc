@@ -1,0 +1,98 @@
+{% extends 'inaEthe/base.html' %}
+{% load static %}
+
+{% block page_title %}Profile{% endblock %}
+
+{% block page_content %}
+<style>
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    .profile-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+    .profile-header img {
+        border-radius: 50%;
+        width: 120px;
+        height: 120px;
+        margin-right: 20px;
+    }
+    .profile-header h1 {
+        margin: 0;
+        color: #333;
+    }
+    .profile-header p {
+        color: #666;
+    }
+    .content-section {
+        margin-top: 20px;
+    }
+    .content-section h2 {
+        margin-bottom: 10px;
+    }
+    .content-section .card {
+        margin-bottom: 20px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        padding: 10px;
+    }
+</style>
+
+<div class="container">
+    <div class="profile-header">
+        {% if profile.profile_picture %}
+            <img src="{{ profile.profile_picture.url }}" alt="{{ profile.user.username }}'s Profile Picture">
+        {% else %}
+            <img src="{% static 'default_profile_picture.jpg' %}" alt="Default Profile Picture">
+        {% endif %}
+        <div>
+            <h1>{{ profile.user.username }}</h1>
+            <p>Joined: {{ profile.user.date_joined|date:"F d, Y" }}</p>
+            <p>Total Content: {{ user_content.count }}</p>
+            <p>Total Books Authored: {{ books_with_user_content.count }}</p>
+        </div>
+    </div>
+
+    <div class="content-section">
+        <h2>Content Created by {{ profile.user.username }}</h2>
+        {% for content in user_content %}
+            <div class="card">
+                <h3>{{ content.title }}</h3>
+                <p>{{ content.body|truncatewords:50 }}</p>
+                <a href="{% url 'inaEthe:content_detail' content.id %}">Read more</a>
+            </div>
+        {% empty %}
+            <p>No content created yet.</p>
+        {% endfor %}
+    </div>
+
+    <div class="content-section">
+        <h2>Books Authored by {{ profile.user.username }}</h2>
+        {% for book in books_with_user_content %}
+            <div class="card">
+                <h3>{{ book.title }}</h3>
+                <p>{{ book.description|truncatewords:50 }}</p>
+                <a href="{% url 'inaEthe:book_detail' book.id %}">Read more</a>
+            </div>
+        {% empty %}
+            <p>No books authored yet.</p>
+        {% endfor %}
+    </div>
+
+    <div class="content-section">
+        <h2>Purchased Books</h2>
+        {% for book in purchased_books %}
+            <div class="card">
+                <h3>{{ book.title }}</h3>
+                <p>{{ book.description|truncatewords:50 }}</p>
+                <a href="{% url 'inaEthe:book_detail' book.id %}">Read more</a>
+            </div>
+        {% empty %}
+            <p>No books purchased yet.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock page_content %}

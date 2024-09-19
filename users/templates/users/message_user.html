@@ -1,0 +1,26 @@
+{% extends 'inaEthe/base.html' %}
+
+{% block page_content %}
+<div class="container mt-4">
+    <h2>Chat with {{ recipient.username }}</h2>
+
+    <div class="messages">
+        <ul class="list-group">
+            {% for message in messages %}
+                <li class="list-group-item">
+                    <strong>{{ message.sender.username }}:</strong> {{ message.content }}
+                    <span class="text-muted small">{{ message.timestamp }}</span>
+                </li>
+            {% empty %}
+                <li class="list-group-item">No messages yet.</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Send</button>
+    </form>
+</div>
+{% endblock page_content %}

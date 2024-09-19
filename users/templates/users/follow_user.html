@@ -1,0 +1,23 @@
+{% extends 'inaEthe/base.html' %}
+
+{% block page_content %}
+{% if request.user != user %}
+    <div class="follow-btn">
+        {% if request.user.is_following(user) %}
+            <form method="POST" action="{% url 'users:unfollow_user' user.username %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">
+                    Unfollow {{ user.username }}
+                </button>
+            </form>
+        {% else %}
+            <form method="POST" action="{% url 'users:follow_user' user.username %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-primary">
+                    Follow {{ user.username }}
+                </button>
+            </form>
+        {% endif %}
+    </div>
+{% endif %}
+{% endblock page_content %}

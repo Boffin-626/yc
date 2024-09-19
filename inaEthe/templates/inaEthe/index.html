@@ -1,0 +1,154 @@
+{% extends 'inaEthe/base.html' %}
+{% load static %}
+
+{% block page_title %}Feed{% endblock %}
+
+{% block page_content %}
+<style>
+    .container {
+        max-width: 1200px;
+    }
+    .card {
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        padding: 10px;
+        width: 100%;
+        max-width: 1000px;
+        margin: 0 auto;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+    }
+    .card-body {
+        padding: 30px;
+    }
+    .card-title {
+        font-size: 2em;
+        color: #333;
+        margin-top: 0;
+    }
+    .card-text {
+        font-size: 1.2em;
+        color: #555;
+    }
+    .profile-info {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+    .profile-info img {
+        border: 1px solid gray;
+        border-radius: 50%;
+        width: 100px;
+        height: 100px;
+        margin-right: 20px;
+    }
+    .profile-info .author-username {
+        font-size: 1.5em;
+        color: #333;
+    }
+    .action-buttons {
+        background-color: #f8f9fa; /* Slightly shaded background */
+        padding: 10px;
+        border-top: 1px solid #dee2e6;
+        display: flex;
+        justify-content: flex-end; /* Moves the buttons to the right */
+        gap: 15px; /* Adds space between buttons */
+        align-items: center;
+    }
+    .btn {
+        border: none;
+        background: transparent;
+        font-size: 0.7em;
+        color: #555;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        cursor: pointer;
+    }
+    .btn i {
+        font-size: 1.5em;
+    }
+    .btn-count {
+        font-size: 0.9em;
+        color: #333;
+    }
+    .follow-btn {
+        background-color: #007bff;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-size: 0.9em;
+        display: inline-block;
+        margin-top: 10px;
+    }
+    .follow-btn.following {
+        background-color: #0056b3;
+    }
+    .comment-section {
+        margin-top: 30px;
+    }
+    .comment {
+        border-bottom: 1px solid #eee;
+        padding: 10px 0;
+        position: relative;
+    }
+    .comment-author {
+        font-weight: bold;
+    }
+    .comment-actions {
+        position: absolute;
+        right: 0;
+        top: 0;
+        display: flex;
+        gap: 5px;
+    }
+</style>
+
+<div class="container mt-1">
+    <h5 class="text-dark text-center">
+        <a href="{% url 'inaEthe:create_content' %}">Create New Content</a>
+    </h5>
+    <div class="row justify-content-center">
+        {% for content in contents %}
+        <div class="col-md-12 mb-4">
+            <div class="card">
+                <div class="profile-info">
+                    {% if content.author.profile.profile_picture %}
+                        <img src="{{ content.author.profile.profile_picture.url }}" alt="{{ content.author.username }}'s Profile Picture">
+                    {% else %}
+                        <img src="{% static 'default_profile_picture.jpg' %}" alt="Default Profile Picture">
+                    {% endif %}
+                    <div>
+                        <p class="author-username">{{ content.author.username }} <br>
+                            <small class="text-muted">{{ content.created_at }}</small>
+                        </p>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">{{ content.body|truncatewords:100 }}</p>
+                </div>
+                <div class="action-buttons">
+                    {% if content.author == user %}
+                        <a href="{% url 'inaEthe:edit_content' content.pk %}" class="btn btn-warning">
+                            <i class="fas fa-edit"></i>
+                            <span class="sr-only">Edit</span>
+                        </a>
+                        <a href="{% url 'inaEthe:delete_content' content.pk %}" class="btn btn-danger">
+                            <i class="fas fa-trash"></i>
+                            <span class="sr-only">Delete</span>
+                        </a>
+                    {% endif %}
+                    <a href="{% url 'inaEthe:like_content' content.id %}" class="btn btn-primary">
+                        <i class="fas fa-heart"></i>
+                        <span class="btn-count">{{ content.total_likes }}</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock page_content %}

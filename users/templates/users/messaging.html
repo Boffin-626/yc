@@ -1,0 +1,21 @@
+{% extends 'inaEthe/base.html' %}
+
+{% block page_content %}
+<h2>Chat with {{ recipient.username }}</h2>
+
+<div class="messages">
+    {% for message in messages %}
+        <div class="{% if message.sender == request.user %}outgoing{% else %}incoming{% endif %}">
+            <p><strong>{{ message.sender.username }}:</strong> {{ message.content }}</p>
+            <p class="timestamp">{{ message.timestamp }}</p>
+        </div>
+    {% endfor %}
+</div>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Send</button>
+</form>
+
+{% endblock page_content %}

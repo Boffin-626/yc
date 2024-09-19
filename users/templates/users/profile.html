@@ -1,0 +1,190 @@
+{% extends 'inaEthe/base.html' %}
+{% load static %}
+
+{% block page_content %}
+<style>
+    .profile-container {
+        max-width: 900px;
+        margin: 40px auto;
+        padding: 40px;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .profile-header {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .profile-header img {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid #ddd;
+    }
+
+    .profile-header h1 {
+        font-size: 2.5em;
+        margin: 0;
+        color: #333;
+        font-weight: bold;
+    }
+
+    .profile-info {
+        margin-top: 20px;
+    }
+
+    .profile-info p {
+        font-size: 1.1em;
+        color: #555;
+        margin: 10px 0;
+        line-height: 1.6;
+    }
+
+    h4 {
+        font-size: 1.8em;
+        color: #333;
+        margin-top: 30px;
+        border-bottom: 2px solid #007bff;
+        padding-bottom: 10px;
+    }
+
+    .content-list, .book-list {
+        list-style: none;
+        padding-left: 0;
+        margin-top: 15px;
+    }
+
+    .content-list li, .book-list li {
+        padding: 15px;
+        background: #f8f9fa;
+        margin-bottom: 10px;
+        border-radius: 8px;
+        transition: background 0.3s;
+    }
+
+    .content-list li:hover, .book-list li:hover {
+        background: #e9ecef;
+    }
+
+    .content-list li strong, .book-list li strong {
+        font-size: 1.2em;
+        color: #333;
+        font-weight: 600;
+    }
+
+    a.btn-primary {
+        display: inline-block;
+        padding: 12px 24px;
+        background-color: #007bff;
+        color: white;
+        font-size: 1.2em;
+        border-radius: 8px;
+        text-decoration: none;
+        margin-top: 30px;
+        transition: background-color 0.3s;
+    }
+
+    a.btn-primary:hover {
+        background-color: #0056b3;
+    }
+
+    /* Media Query for Mobile */
+    @media (max-width: 768px) {
+        .profile-header {
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .profile-header img {
+            margin-bottom: 20px;
+        }
+
+        .profile-header h1 {
+            font-size: 2em;
+        }
+    }
+</style>
+
+<div class="profile-container">
+    <!-- Profile Header -->
+    <div class="profile-header">
+        {% if profile.user.profile_picture %}
+        <img src="{{ profile.user.profile_picture.url }}" alt="Profile Picture">
+        {% else %}
+        <img src="{% static 'default_profile_picture.jpg' %}" alt="Default Profile Picture">
+        {% endif %}
+        <h1>{{ profile.user.username }}'s Profile</h1>
+    </div>
+
+    <!-- Profile Information -->
+    <div class="profile-info">
+        <p><strong>Bio:</strong> {{ profile.bio }}</p>
+        <p><strong>Date of Birth:</strong> {{ profile.date_of_birth }}</p>
+        <p><strong>Location:</strong> {{ profile.location }}</p>
+        {% if request.user.is_authenticated %}
+            {% if user != request.user %}
+                {% if is_following %}
+                    <form action="{% url 'users:unfollow_user' user.username %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit">Unfollow</button>
+                    </form>
+                {% else %}
+                <form action="{% url 'users:follow_user' user.username %}" method="post">
+                {% csrf_token %}
+                <button type="submit">Follow</button>
+                </form>
+                {% endif %}
+            {% endif %}
+        {% endif %}
+    </div>
+    <h4>Following: {{ user.following.count }}</h4>
+    <ul>
+        {% for following in user.following.all %}
+            <li><a href="{% url 'users:profile' %}">{{ following.username }}</a></li>
+        {% endfor %}
+    </ul>
+
+    <!-- User's Content -->
+    <h4>Your Content</h4>
+    {% if user_content %}
+        <ul class="content-list">
+        {% for content in user_content %}
+            <li><strong>{{ content.title }}</strong>: {{ content.body|slice:":50" }}...</li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>You have not created any content yet.</p>
+    {% endif %}
+
+    <!-- Books with User's Content -->
+    <h4>Books with Your Content</h4>
+    {% if books_with_user_content %}
+        <ul class="book-list">
+        {% for book in books_with_user_content %}
+            <li><strong>{{ book.title }}</strong>: {{ book.description|slice:":100" }}...</li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No books contain your content.</p>
+    {% endif %}
+
+    <!-- Purchased Books -->
+    <h4>Books in Your Library</h4>
+    {% if purchased_books %}
+        <ul class="book-list">
+        {% for book in purchased_books %}
+            <li><strong>{{ book.title }}</strong>: {{ book.description|slice:":100" }}...</li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>You have not purchased any books yet.</p>
+    {% endif %}
+
+    <!-- Edit Profile Button -->
+    <a href="{% url 'users:edit_profile' %}" class="btn-primary">Edit Profile</a>
+</div>
+{% endblock page_content %}

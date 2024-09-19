@@ -1,0 +1,58 @@
+<!-- users/templates/users/edit_profile.html -->
+
+{% extends 'inaEthe/base.html' %}
+
+{% block page_content %}
+<style>
+    .edit-profile-container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 20px;
+        background: #f9f9f9;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .edit-profile-container h1 {
+        font-size: 2em;
+        margin-bottom: 20px;
+        color: #333;
+    }
+    .edit-profile-container form {
+        display: flex;
+        flex-direction: column;
+    }
+    .edit-profile-container label {
+        margin-bottom: 10px;
+        font-size: 1.1em;
+    }
+    .edit-profile-container input,
+    .edit-profile-container textarea {
+        padding: 10px;
+        margin-bottom: 20px;
+        font-size: 1.1em;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+    .edit-profile-container button {
+        padding: 10px 20px;
+        font-size: 1.1em;
+        color: #fff;
+        background-color: #007bff;
+        border-radius: 4px;
+        border: none;
+        cursor: pointer;
+    }
+    .edit-profile-container button:hover {
+        background-color: #0056b3;
+    }
+</style>
+
+<div class="edit-profile-container">
+    <h1>Edit Profile</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Save Changes</button>
+    </form>
+</div>
+{% endblock page_content %}

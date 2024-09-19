@@ -1,0 +1,14 @@
+{% extends 'inaEthe/base.html' %}
+
+{% block page_content %}
+<h1>{{ book.title }}</h1>
+<p>{{ book.preview_text }}</p>
+
+<h3>Price: ${{ book.price }}</h3>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Purchase</button>
+</form>
+{% endblock page_content %}

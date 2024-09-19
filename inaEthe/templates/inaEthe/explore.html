@@ -1,0 +1,66 @@
+{% extends 'inaEthe/base.html' %}
+
+{% block page_content %}
+<div class="explore-page">
+    
+    <h1>Explore</h1>
+
+    <!-- Trending Content Section -->
+    <section class="trending-section">
+        <h2>Trending Content</h2>
+        {% if trending_content %}
+            <ul class="trending-list">
+                {% for content in trending_content %}
+                    <li class="trending-item">
+                        <div class="trending-details">
+                            <h3>{{ content.title }}</h3>
+                            <p>by <strong>{{ content.author }}</strong></p>
+                            <p>{{ content.likes.count }} likes</p>
+                        </div>
+                        <a href="{% url 'inaEthe:content_detail' content.id %}" class="view-content">View Content</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No trending content available at the moment.</p>
+        {% endif %}
+    </section>
+
+    <!-- Recommended Content Section -->
+    <section class="recommended-section">
+        <h2>Recommended for You</h2>
+        {% if recommended_content %}
+            <ul class="recommended-list">
+                {% for content in recommended_content %}
+                    <li class="recommended-item">
+                        <div class="recommended-details">
+                            <h3>{{ content.title }}</h3>
+                            <p>by <strong>{{ content.author }}</strong></p>
+                        </div>
+                        <a href="{% url 'inaEthe:content_detail' content.id %}" class="view-content">View Content</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No recommendations available at this time. Start exploring more to get personalized recommendations!</p>
+        {% endif %}
+    </section>
+
+    <!-- Categories Section -->
+    <section class="categories-section">
+        <h2>Browse by Category</h2>
+        {% if categories %}
+            <ul class="categories-list">
+                {% for category in categories %}
+                    <li class="category-item">
+                        <a href="{% url 'inaEthe:category_detail' category.id %}">{{ category.name }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No categories found.</p>
+        {% endif %}
+    </section>
+
+</div>
+{% endblock page_content %}

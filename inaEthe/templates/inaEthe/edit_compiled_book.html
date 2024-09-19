@@ -1,0 +1,22 @@
+{% extends 'inaEthe:base.html' %}
+
+{% block page_content %}
+<h1>Edit Book: {{ book.title }}</h1>
+
+<form method="POST">
+    {% csrf_token %}
+    <h2>Select Content to Include in This Book:</h2>
+    <ul>
+        {% for content in approved_content %}
+        <li>
+            <input type="checkbox" name="content_ids" value="{{ content.id }}" 
+            {% if content in book.content.all %}checked{% endif %}>
+            {{ content.title }} by {{ content.author.username }}
+        </li>
+        {% endfor %}
+    </ul>
+    
+    <button type="submit">Save Changes</button>
+</form>
+<a href="{% url 'inaEthe:book_detail' book.id %}">Back to Book Details</a>
+{% endblock page_content %}

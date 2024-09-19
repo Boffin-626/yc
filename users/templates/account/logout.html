@@ -1,0 +1,83 @@
+{% extends "account/base_manage.html" %}
+{% load static %}
+
+{% load allauth i18n %}
+{% block head_title %}
+    {% trans "Sign Out" %}
+{% endblock head_title %}
+
+{% block content %}
+<style>
+    .logout-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        text-align: center;
+        background-color: #f6f8fa;
+    }
+
+    .logout-box {
+        background-color: white;
+        border: 1px solid #e1e4e8;
+        border-radius: 6px;
+        padding: 20px;
+        box-shadow: 0 3px 15px rgba(0, 0, 0, 0.1);
+        max-width: 400px;
+        width: 100%;
+    }
+
+    .logout-box h1 {
+        font-size: 24px;
+        color: #24292f;
+        margin-bottom: 10px;
+    }
+
+    .logout-box p {
+        color: #586069;
+        margin-bottom: 20px;
+    }
+
+    .logout-button {
+        background-color: #0f1829;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+    }
+
+    .logout-button:hover {
+        background-color: #22863a;
+    }
+
+    .cancel-link {
+        color: #0366d6;
+        text-decoration: none;
+        margin-top: 20px;
+        display: block;
+    }
+
+    .cancel-link:hover {
+        text-decoration: underline;
+    }
+</style>
+
+<div class="logout-container">
+    <div class="logout-box">
+        <img src="{% static 'images/auth.png' %}" />
+        <h1>{% trans "Sign Out" %}</h1>
+        <p>{% trans 'Are you sure you want to sign out?' %}</p>
+        {% url 'account_logout' as action_url %}
+        <form method="post" action="{{ action_url }}">
+            {% csrf_token %}
+            {{ redirect_field }}
+            <button type="submit" class="logout-button">{% trans "Sign Out" %}</button>
+        </form>
+        <a href="{% url 'inaEthe:index' %}" class="cancel-link">{% trans "Cancel" %}</a>
+    </div>
+</div>
+{% endblock content %}

@@ -1,0 +1,31 @@
+{% extends 'inaEthe/base.html' %}
+
+{% block page_content %}
+  <div class="content-detail">
+    <h3>{{ content.title }}</h3>
+    <p>{{ content.body }}</p>
+    <p>Author: {{ content.author.username }}</p>
+    <p>Published on: {{ content.created_at }}</p>
+
+    {% if content.author == user %}
+      <a href="{% url 'inaEthe:edit_content' content.pk %}">Edit</a> |
+      <a href="{% url 'inaEthe:delete_content' content.pk %}">Delete</a>
+    {% endif %}
+    
+    <!-- Like Button -->
+    <div class="like-section">
+      <form method="POST" action="{% url 'inaEthe:like_content' content.pk %}">
+        {% csrf_token %}
+        {% if user in content.likes.all %}
+          <button type="submit" class="btn btn-danger">Unlike</button>
+        {% else %}
+          <button type="submit" class="btn btn-primary">Like</button>
+        {% endif %}
+      </form>
+      <p>{{ content.likes.count }} likes</p>
+    </div>
+
+  </div>
+
+  <a href="{% url 'inaEthe:index' %}">Back to feed</a>
+{% endblock page_content %}

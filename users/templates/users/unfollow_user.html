@@ -1,0 +1,25 @@
+{% extends 'inaEthe/base.html' %}
+
+{% block page_title %}Unfollow {{ user_to_unfollow.username }}{% endblock page_title %}
+
+{% block page_content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-danger text-white">
+                    Unfollow {{ user_to_unfollow.username }}
+                </div>
+                <div class="card-body">
+                    <p>Are you sure you want to unfollow <strong>{{ user_to_unfollow.username }}</strong>?</p>
+                    <form method="POST" action="{% url 'users:unfollow_user' user_to_unfollow.username %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger">Unfollow</button>
+                        <a href="{% url 'users:profile' user_to_unfollow.username %}" class="btn btn-secondary">Cancel</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock page_content %}

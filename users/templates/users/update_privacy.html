@@ -1,0 +1,10 @@
+{% extends 'inaEthe/base.html' %}
+
+{% block page_content %}
+<h2>Update Privacy Settings</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Update Privacy</button>
+</form>
+{% endblock page_content %}

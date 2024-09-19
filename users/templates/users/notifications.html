@@ -1,0 +1,22 @@
+{% extends 'inaEthe/base.html' %}
+{% block page_title %}Notifications{% endblock page_title %}
+
+{% block page_content %}
+<div class="container">
+    <h2>Notifications</h2>
+    <ul class="list-group">
+        {% for notification in notifications %}
+            <li class="list-group-item">
+                {% if not notification.is_read %}
+                <strong>{{ notification.message }}</strong>
+                {% else %}
+                {{ notification.message }}
+                {% endif %}
+                <small class="text-muted float-right">{{ notification.timestamp|timesince }} ago</small>
+            </li>
+        {% empty %}
+            <li class="list-group-item">You have no notifications.</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock page_content %}

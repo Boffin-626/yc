@@ -1,0 +1,10 @@
+{% extends 'inaEthe/base.html' %}
+
+{% block page_content %}
+<h3>Submit Content</h3>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Submit</button>
+</form>
+{% endblock page_content %}

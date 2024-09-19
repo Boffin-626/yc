@@ -1,0 +1,7 @@
+{% extends 'inaEthe/base.html' %}
+
+{% block page_content %}
+<h1>{{ book.title }} - Download</h1>
+<p>Your book is ready to download!</p>
+<a href="{% url 'inaEthe:book_download' book.id %}">Download PDF</a>
+{% endblock page_content %}

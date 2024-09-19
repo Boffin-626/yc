@@ -1,0 +1,13 @@
+{% extends 'inaEthe/base.html' %}
+
+{% block title %}Home - InaEthe{% endblock title %}
+
+{% block page_content %}
+<div class="text-center">
+    <h4>Hey, {{ user.username }}</h4>
+    <p class="lead">Create Content | Share & Engage | Get Published | Reap the Rewards.</p>
+    <a href="{% url 'inaEthe:book_list' %}" class="btn btn-primary">Selling Books</a>
+    <a href="{% url 'inaEthe:create_content' %}" class="btn btn-secondary">Create</a>
+    <!-- base.html or any other main template -->
+</div>
+{% endblock page_content %}

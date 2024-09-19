@@ -1,0 +1,16 @@
+{% extends 'inaEthe/base.html' %}
+
+{% block page_content %}
+<h1>Books</h1>
+
+<ul>
+    {% for book in books %}
+        <li>
+            {{ book.title }} - Compiled by {{ book.compiled_by.username }}
+            <a href="{% url 'inaEthe:edit_compiled_book' book.id %}">Edit</a>
+        </li>
+    {% endfor %}
+</ul>
+
+<a href="{% url 'inaEthe:compile_book' %}">Create New Book</a>
+{% endblock page_content %}

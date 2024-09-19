@@ -1,0 +1,24 @@
+{% extends 'inaEthe/base.html' %}
+
+{% block page_content %}
+  <div class="content-detail">
+    <h2>{{ content.title }}</h2>
+    <p>{{ content.body }}</p>
+
+    <div class="like-section">
+      <p>{{ content.total_likes }} Likes</p>
+
+      {% if user.is_authenticated %}
+        <a href="{% url 'inaEthe:like_content' content.id %}" class="btn btn-primary">
+          {% if user in content.likes.all %}
+            Unlike
+          {% else %}
+            Like
+          {% endif %}
+        </a>
+      {% else %}
+        <p><a href="{% url 'users:login' %}">Log in</a> to like this content.</p>
+      {% endif %}
+    </div>
+  </div>
+{% endblock page_content %}

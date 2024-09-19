@@ -1,0 +1,29 @@
+{% extends "inaEthe/base.html" %}
+{% load static %}
+{% block page_content %}
+    <div class="container">
+        <h1>{{ book.title }}</h1>
+        {% if book.cover_image %}
+            <img src="{% static 'images/redlogo.png' %}" alt="InaEthe Logo"/>
+            <img src="data:image/png;base64,{{ base64_image_data }}" alt="Cover Image"/>
+
+
+        {% endif %}
+        <div class="description">
+            <p><strong>Description:</strong> {{ book.description }}</p>
+        </div>
+        <div class="content-list">
+            <h2>Contents</h2>
+            {% if contents %}
+                <ul>
+                    {% for content in contents %}
+                        <li class="content-item">{{ content.title }}</li>
+                        <li class="content-item">{{ content.body }}</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No content available.</p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock page_content %}

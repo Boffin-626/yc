@@ -1,0 +1,164 @@
+{% extends "account/base_entrance.html" %}
+{% load static %}
+{% load i18n %}
+{% load allauth account %}
+{% block head_title %}
+    {% trans "Sign In" %}
+{% endblock head_title %}
+
+{% block content %}
+<style>
+    .login-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        background-color: #f6f8fa;
+        padding: 20px;
+    }
+
+    .login-box {
+        background-color: white;
+        border: 1px solid #e1e4e8;
+        border-radius: 6px;
+        padding: 30px;
+        box-shadow: 0 3px 15px rgba(0, 0, 0, 0.1);
+        max-width: 360px;
+        width: 100%;
+        text-align: center;
+    }
+
+    .login-box h1 {
+        font-size: 24px;
+        color: #24292f;
+        margin-bottom: 20px;
+    }
+
+    .login-box p {
+        color: #586069;
+        margin-bottom: 20px;
+    }
+
+    .login-box form {
+        margin-bottom: 20px;
+    }
+
+    .login-box .form-group {
+        margin-bottom: 15px;
+    }
+
+    .login-box input {
+        width: 100%;
+        padding: 10px;
+        font-size: 14px;
+        border: 1px solid #e1e4e8;
+        border-radius: 6px;
+        box-sizing: border-box;
+        margin-bottom: 10px;
+    }
+
+    .login-button {
+        background-color: #0f1829;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        padding: 10px;
+        font-size: 16px;
+        cursor: pointer;
+        width: 100%;
+        transition: background-color 0.2s ease;
+    }
+
+    .login-button:hover {
+        background-color: #0f1829;
+    }
+
+    .alternative-login-options {
+        margin-top: 20px;
+        text-align: center;
+    }
+
+    .alternative-login-options hr {
+        margin: 20px 0;
+        border: none;
+        border-top: 1px solid #e1e4e8;
+    }
+
+    .alternative-login-options .alternative-button {
+        display: block;
+        padding: 10px;
+        border: 1px solid #0366d6;
+        border-radius: 6px;
+        color: #0366d6;
+        text-decoration: none;
+        margin-bottom: 10px;
+        transition: background-color 0.2s ease, color 0.2s ease;
+    }
+
+    .alternative-login-options .alternative-button:hover {
+        background-color: #0366d6;
+        color: white;
+    }
+
+    .signup-link {
+        color: #0366d6;
+        text-decoration: none;
+        margin-top: 20px;
+        display: block;
+    }
+
+    .signup-link:hover {
+        text-decoration: underline;
+    }
+</style>
+
+<div class="login-container">
+    <div class="login-box">
+        <img src="{% static 'images/auth.png' %}" />
+        <h1>{% trans "Sign In" %}</h1>
+
+        {% if not SOCIALACCOUNT_ONLY %}
+            <p>{% blocktranslate %}If you have not created an account yet, please <a href="{{ signup_url }}">sign up</a> first.{% endblocktranslate %}</p>
+            {% url 'account_login' as login_url %}
+            <form method="post" action="{{ login_url }}">
+                {% csrf_token %}
+                {{ redirect_field }}
+                {{ form.as_p }}
+                <button type="submit" class="login-button">{% trans "Sign In" %}</button>
+            </form>
+        {% endif %}
+
+        {% if LOGIN_BY_CODE_ENABLED or PASSKEY_LOGIN_ENABLED %}
+        <div class="alternative-login-options">
+            <hr>
+            {% if PASSKEY_LOGIN_ENABLED %}
+                <button type="submit" form="mfa_login" id="passkey_login" class="alternative-button">
+                    {% trans "Sign in with a passkey" %}
+                </button>
+            {% endif %}
+            {% if LOGIN_BY_CODE_ENABLED %}
+                <a href="{{ request_login_code_url }}" class="alternative-button">
+                    {% trans "Mail me a sign-in code" %}
+                </a>
+            {% endif %}
+        </div>
+        {% endif %}
+        
+        {% if SOCIALACCOUNT_ENABLED %}
+            <div class="alternative-login-options">
+                {% include "socialaccount/snippets/login.html" with page_layout="entrance" %}
+            </div>
+        {% endif %}
+
+        <a href="{{ signup_url }}" class="signup-link">{% trans "Don't have an account? Sign up" %}</a>
+    </div>
+</div>
+{% endblock content %}
+
+{% block extra_body %}
+    {{ block.super }}
+    {% if PASSKEY_LOGIN_ENABLED %}
+        {% include "mfa/webauthn/snippets/login_script.html" with button_id="passkey_login" %}
+    {% endif %}
+{% endblock %}
